@@ -1,7 +1,7 @@
 pipeline {
   environment {
     registry = "shanmuk98/angular7-sample"
-    registryCredential = 'docker_hub_subhashc27'
+    registryCredential = 'docker_hub_shanmuk98'
     dockerImage = ''
   }
   agent any
