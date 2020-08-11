@@ -6,6 +6,11 @@ pipeline {
   }
   agent any
   stages{
+    stage('Install node modules'){
+        
+        sh 'npm install'
+    }
+    
     stage ('Build') {
       steps{
         echo "Building Project"
