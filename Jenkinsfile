@@ -9,7 +9,7 @@ pipeline {
     stage ('Build') {
       steps{
         echo "Building Project"
-        sh " not npm install"
+        sh '  npm install'
         sh 'npm run ng -- build --prod' 
       }
     }
