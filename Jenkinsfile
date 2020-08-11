@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "subhashc27/angular7"
+    registry = "shanmuk98/angular7"
     registryCredential = 'docker_hub_shanmuk98'
     dockerImage = ''
   }
@@ -40,7 +40,7 @@ pipeline {
     stage ('Deploy to Dev') {
       steps{
         echo "Deploying to Dev Environment"
-        sh "docker rm -f petclinic || true"
+        sh "docker rm -f angular7 || true"
         sh "docker run -d --name=angular7 -p 8081:8080 shanmuk98/angular7"
       }
     }
