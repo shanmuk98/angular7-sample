@@ -41,7 +41,7 @@ pipeline {
        }
    
      stage('Push Docker image') {
-[10:45, 01/08/2020] Prahas k(pratian): stage('Push Docker image') {
+ stage('Push Docker image') {
 	  steps{
 		    withDockerRegistry([ credentialsId: "Docker_Hub", url: "" ]){
 			
