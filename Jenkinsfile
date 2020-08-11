@@ -8,13 +8,13 @@ pipeline {
     }
    stage("Install node modules") {
      steps {
-	     powershell 'npm install'
+	     sh 'npm install'
          echo "modules installed"
    }
    }
    stage("build") {
      steps {
-			powershell 'npm run ng -- build --prod'
+			sh 'npm run ng -- build --prod'
             echo "build successful"
    }
    }
