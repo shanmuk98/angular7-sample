@@ -1,22 +1,49 @@
 pipeline {
- agent any
-  stages {
-    stage('SCM') {
-      steps {
-         git 'https://github.com/shanmuk98/angular7-sample.git'
-       }
+  environment {
+    registry = "shanmuk98/angular7-sample"
+    registryCredential = 'docker_hub_subhashc27'
+    dockerImage = ''
+  }
+  agent any
+  stages{
+    stage ('Build') {
+      steps{
+        echo "Building Project"
+        sh "npm install"
+        sh 'npm run ng -- build --prod' 
+      }
     }
-   stage("Install node modules") {
-     steps {
-	     powershell 'npm install'
-         echo "modules installed"
-   }
-   }
-   stage("build") {
-     steps {
-			powershell 'npm run ng --build --prod'
-            echo "build successful"
-   }
-   }
-}
+    stage ('Archive') {
+      steps{
+        echo "Archiving Project"
+        archiveArtifacts artifacts: '*/.json', followSymlinks: false
+      }
+    }
+    stage ('Build Docker Image') {
+      steps{
+        echo "Building Docker Image"
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage ('Push Docker Image') {
+      steps{
+        echo "Pushing Docker Image"
+        script {
+          docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+              dockerImage.push('latest')
+          }
+        }
+      }
+    }
+    stage ('Deploy to Dev') {
+      steps{
+        echo "Deploying to Dev Environment"
+        sh "docker rm -f angular7-sample || true"
+        sh "docker run -d --name=angular7-sample -p 8081:8080 shanmuk98/angular7-sample"
+      }
+    }
+  }
 }
